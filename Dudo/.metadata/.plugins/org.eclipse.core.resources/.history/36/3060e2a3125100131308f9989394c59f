@@ -1,0 +1,233 @@
+package edu.up.cs301.dudo;
+
+import edu.up.cs301.game.GameHumanPlayer;
+import edu.up.cs301.game.GameMainActivity;
+import edu.up.cs301.game.R;
+import edu.up.cs301.game.actionMsg.GameAction;
+import edu.up.cs301.game.infoMsg.GameInfo;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
+import android.view.View.OnClickListener;
+
+/**
+ * A GUI of a counter-player. The GUI displays the current value of the counter,
+ * and allows the human player to press the '+' and '-' buttons in order to
+ * send moves to the game.
+ * 
+ * Just for fun, the GUI is implemented so that if the player presses either button
+ * when the counter-value is zero, the screen flashes briefly, with the flash-color
+ * being dependent on whether the player is player 0 or player 1.
+ * 
+ * @author Steven R. Vegdahl
+ * @author Andrew M. Nuxoll
+ * @version July 2013
+ */
+public class DudoHumanPlayer extends GameHumanPlayer implements DudoPlayer, OnClickListener, OnSeekBarChangeListener {
+
+	/* instance variables */
+	
+	// the most recent game state, as given to us by the CounterLocalGame
+	private DudoState state;
+	
+	// the android activity that we are running
+	private GameMainActivity myActivity;
+
+	public RadioButton dieVal1;
+	public RadioButton dieVal2;
+	public RadioButton dieVal3;
+	public RadioButton dieVal4;
+	public RadioButton dieVal5;
+	public RadioButton dieVal6;
+	public TextView bidText;
+	public SeekBar dieSeekBar;
+	public Button roll;
+	public Button dudo;
+	public Button bid;
+	public Button quit;
+	int bidVal = 2;
+	int bidFreq = 0;
+	
+	int playerIdx;
+	
+	/**
+	 * constructor
+	 * @param name
+	 * 		the player's name
+	 */
+	public DudoHumanPlayer(String name) {
+		super(name);
+	}
+
+	/**
+	 * Returns the GUI's top view object
+	 * 
+	 * @return
+	 * 		the top object in the GUI's view heirarchy
+	 */
+	public View getTopView() {
+		return myActivity.findViewById(R.id.top_gui_layout);
+	}
+	
+	/**
+	 * sets the counter value in the text view
+	 */
+	protected void updateDisplay() {
+		// set the text in the appropriate widget
+		roll.setText("Roll");
+	}
+
+	/**
+	 * this method gets called when the user clicks the '+' or '-' button. It
+	 * creates a new CounterMoveAction to return to the parent activity.
+	 * 
+	 * @param button
+	 * 		the button that was clicked
+	 */
+	public void onClick(View button) {
+
+		// if we are not yet connected to a game, ignore
+		if (game == null) return;
+
+		// Construct the action and send it to the game
+		GameAction action = null;
+		
+		//changes the die value in text
+		
+		if( dieVal1.isChecked()){
+			bidVal = 1;
+			bidText.setText(bidVal + " : " + bidFreq);
+		}
+		else if (dieVal2.isChecked()){
+			bidVal = 2;
+			bidText.setText(bidVal + " : " + bidFreq);
+		}
+		else if (dieVal3.isChecked()){
+			bidVal = 3;
+			bidText.setText(bidVal + " : " + bidFreq);
+		}
+		else if (dieVal4.isChecked()){
+			bidVal = 4;
+			bidText.setText(bidVal + " : " + bidFreq);
+		}
+		else if (dieVal5.isChecked()){
+			bidVal = 5;
+			bidText.setText(bidVal + " : " + bidFreq);
+		}	
+		else if (dieVal6.isChecked()){
+			bidVal = 6;
+			bidText.setText(bidVal + " : " + bidFreq);
+		}
+		if ((bidVal != 0) && (bidFreq != 0))
+		{
+			action = new DudoBidAction(this, bidVal, bidFreq);
+		}
+
+		if (button.getId() == R.id.roll) {
+			
+		}
+		if (button.getId() == R.id.dudo){
+			//action = new DudoDudoAction(this);
+		}
+		if (button.getId() == R.id.bid){
+			
+		}
+		if (button.getId() == R.id.quit){
+			System.exit(0);
+		}
+		
+		game.sendAction(action); // send action to the game
+	}// onClick
+	
+	/**
+	 * callback method when we get a message (e.g., from the game)
+	 * 
+	 * @param info
+	 * 		the message
+	 */
+	@Override
+	public void receiveInfo(GameInfo info) {
+		// ignore the message if it's not a CounterState message
+		if (!(info instanceof DudoState)) return;
+		
+		// update our state; then update the display
+		this.state = (DudoState)info;
+		updateDisplay();
+	}
+	
+	/**
+	 * callback method--our game has been chosen/rechosen to be the GUI,
+	 * called from the GUI thread
+	 * 
+	 * @param activity
+	 * 		the activity under which we are running
+	 */
+	public void setAsGui(GameMainActivity activity) {
+		
+		// remember the activity
+		myActivity = activity;
+		
+	    // Load the layout resource for our GUI
+		activity.setContentView(R.layout.counter_human_player);
+		
+		//Set ID's
+		dieVal1 = (RadioButton) activity.findViewById(R.id.dv1);
+		dieVal2 = (RadioButton) activity.findViewById(R.id.dv2);
+		dieVal3 = (RadioButton) activity.findViewById(R.id.dv3);
+		dieVal4 = (RadioButton) activity.findViewById(R.id.dv4);
+		dieVal5 = (RadioButton) activity.findViewById(R.id.dv5);
+		dieVal6 = (RadioButton) activity.findViewById(R.id.dv6);
+		roll = (Button) activity.findViewById(R.id.roll);
+		dudo = (Button) activity.findViewById(R.id.dudo);
+		bid = (Button) activity.findViewById(R.id.bid);
+		quit = (Button) activity.findViewById(R.id.quit);
+		dieSeekBar = (SeekBar) activity.findViewById(R.id.freqBar);
+		
+		//Register Listeners
+		dieVal1.setOnClickListener(this);
+		dieVal2.setOnClickListener(this);
+		dieVal3.setOnClickListener(this);
+		dieVal4.setOnClickListener(this);
+		dieVal5.setOnClickListener(this);
+		dieVal6.setOnClickListener(this);
+		roll.setOnClickListener(this);
+		dudo.setOnClickListener(this);
+		bid.setOnClickListener(this);
+		quit.setOnClickListener(this);
+		dieSeekBar.setOnSeekBarChangeListener(this);
+		
+		//Bid Text Module
+		bidText = (TextView) activity.findViewById(R.id.seekbarVal);
+		bidText.setText(bidVal + " : " + bidFreq);
+		
+		dieSeekBar.setProgress(0);
+		dieSeekBar.setMax(10);
+		
+		// if we have a game state, "simulate" that we have just received
+		// the state from the game so that the GUI values are updated
+		if (state != null) {
+			receiveInfo(state);
+		}
+	}
+
+	public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+		bidFreq = dieSeekBar.getProgress();
+		bidText.setText(bidVal + " : " + bidFreq);
+		
+	}
+
+	public void onStartTrackingTouch(SeekBar arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onStopTrackingTouch(SeekBar arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}// class CounterHumanPlayer
+
