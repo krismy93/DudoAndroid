@@ -1,5 +1,7 @@
 package edu.up.cs301.dudo;
 
+import java.util.Arrays;
+
 import edu.up.cs301.game.GameHumanPlayer;
 import edu.up.cs301.game.GameMainActivity;
 import edu.up.cs301.game.R;
@@ -50,6 +52,8 @@ public class DudoHumanPlayer extends GameHumanPlayer implements DudoPlayer, OnCl
 	public Button quit;
 	int bidVal = 0;
 	int bidFreq = 0;
+	public TextView playerA;
+	public TextView currPlayer;
 	
 	int playerIdx;
 	
@@ -60,6 +64,7 @@ public class DudoHumanPlayer extends GameHumanPlayer implements DudoPlayer, OnCl
 	 */
 	public DudoHumanPlayer(String name) {
 		super(name);
+	
 	}
 
 	/**
@@ -78,6 +83,8 @@ public class DudoHumanPlayer extends GameHumanPlayer implements DudoPlayer, OnCl
 	protected void updateDisplay() {
 		// set the text in the appropriate widget
 		roll.setText("Roll");
+		currPlayer.setText("The Current Player is: " + state.whoseTurnIsIt);
+		bidText.setText("Die Value: " + bidVal + "\n Die Frequency:" + bidFreq);
 	}
 
 	/**
@@ -96,10 +103,12 @@ public class DudoHumanPlayer extends GameHumanPlayer implements DudoPlayer, OnCl
 		GameAction action = null;
 
 		if (button.getId() == R.id.roll) {
-			
+			action = new DudoRollAction(this, true);
+			//printing out die values of the human player
+			playerA.setText(" " + Arrays.toString(state.playerAndDice[this.playerNum]));
 		}
 		if (button.getId() == R.id.dudo){
-			//action = new DudoDudoAction(this);
+			action = new DudoDudoAction(this, state.currentBid.lastVal,state.currentBid.lastFreq);
 		}
 		if (button.getId() == R.id.bid){
 			if( dieVal1.isChecked()){
@@ -120,6 +129,7 @@ public class DudoHumanPlayer extends GameHumanPlayer implements DudoPlayer, OnCl
 			else if (dieVal6.isChecked()){
 				bidVal = 6;
 			}
+			//check to make sure that bid and bidFrequency are above 0
 			if ((bidVal != 0) && (bidFreq != 0))
 			{
 				action = new DudoBidAction(this, bidVal, bidFreq);
@@ -129,6 +139,7 @@ public class DudoHumanPlayer extends GameHumanPlayer implements DudoPlayer, OnCl
 			System.exit(0);
 		}
 		
+		bidText.setText("Die Value: " + bidVal + "\n Die Frequency:" + bidFreq);
 		game.sendAction(action); // send action to the game
 	}// onClick
 	
@@ -140,7 +151,7 @@ public class DudoHumanPlayer extends GameHumanPlayer implements DudoPlayer, OnCl
 	 */
 	@Override
 	public void receiveInfo(GameInfo info) {
-		// ignore the message if it's not a CounterState message
+		// ignore the message if it's not a DudoState message
 		if (!(info instanceof DudoState)) return;
 		
 		// update our state; then update the display
@@ -191,17 +202,32 @@ public class DudoHumanPlayer extends GameHumanPlayer implements DudoPlayer, OnCl
 		
 		//Bid Text Module
 		bidText = (TextView) activity.findViewById(R.id.seekbarVal);
-		bidText.setText(bidVal + " : " + bidFreq);
+		bidText.setText("Die Value: 0" + " Die Frequency: 0");
+		
+		playerA = (TextView) activity.findViewById(R.id.Opponent1);
+		currPlayer = (TextView)activity.findViewById(R.id.currPlayer);
 		
 		// if we have a game state, "simulate" that we have just received
 		// the state from the game so that the GUI values are updated
 		if (state != null) {
 			receiveInfo(state);
+			
 		}
 	}
 
-	public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-		// TODO Auto-generated method stub
+	public void onProgressChanged(SeekBar bar, int value, boolean arg2) {
+		int max = state.diceLeft();
+		if(max == 0){
+		bar.setMax(1);
+		}
+		else{
+			bar.setMax(max);
+		}
+		//playerA.setText(" " + bar.getMax());
+		
+		bidFreq = value;
+		bidText.setText("Die Value: " + bidVal + "\n Die Frequency:" + bidFreq);
+
 		
 	}
 

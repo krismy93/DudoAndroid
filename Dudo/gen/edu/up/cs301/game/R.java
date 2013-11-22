@@ -29,11 +29,13 @@ public final class R {
         public static final int purple_delete_button=0x7f020002;
     }
     public static final class id {
-        public static final int addPlayerButton=0x7f09001b;
-        public static final int backButton2=0x7f090011;
+        public static final int Opponent1=0x7f090001;
+        public static final int addPlayerButton=0x7f09001c;
+        public static final int backButton2=0x7f090012;
         public static final int bid=0x7f09000b;
-        public static final int configTableLayout=0x7f090016;
-        public static final int delPlayerButton=0x7f09001f;
+        public static final int configTableLayout=0x7f090017;
+        public static final int currPlayer=0x7f09000e;
+        public static final int delPlayerButton=0x7f090020;
         public static final int dudo=0x7f09000c;
         public static final int dv1=0x7f090002;
         public static final int dv2=0x7f090003;
@@ -42,30 +44,29 @@ public final class R {
         public static final int dv5=0x7f090006;
         public static final int dv6=0x7f090007;
         public static final int freqBar=0x7f090009;
-        public static final int ipCodeLabel=0x7f090017;
-        public static final int localGameTab=0x7f090012;
-        public static final int localTabLayout=0x7f090013;
-        public static final int menu_settings=0x7f090025;
-        public static final int playGameButton=0x7f090010;
-        public static final int playerA=0x7f090001;
-        public static final int playerNameEditText=0x7f09001d;
-        public static final int playerNameHeadingText=0x7f090019;
-        public static final int playerTypeHeadingText=0x7f09001a;
-        public static final int playerTypeSpinner=0x7f09001e;
+        public static final int ipCodeLabel=0x7f090018;
+        public static final int localGameTab=0x7f090013;
+        public static final int localTabLayout=0x7f090014;
+        public static final int menu_settings=0x7f090026;
+        public static final int playGameButton=0x7f090011;
+        public static final int playerNameEditText=0x7f09001e;
+        public static final int playerNameHeadingText=0x7f09001a;
+        public static final int playerTypeHeadingText=0x7f09001b;
+        public static final int playerTypeSpinner=0x7f09001f;
         public static final int quit=0x7f09000d;
-        public static final int remoteGameTab=0x7f090014;
-        public static final int remoteIPCodeEditText=0x7f090024;
-        public static final int remoteNameEditText=0x7f090021;
-        public static final int remoteTabLayout=0x7f090015;
-        public static final int remote_player_spinner=0x7f090022;
+        public static final int remoteGameTab=0x7f090015;
+        public static final int remoteIPCodeEditText=0x7f090025;
+        public static final int remoteNameEditText=0x7f090022;
+        public static final int remoteTabLayout=0x7f090016;
+        public static final int remote_player_spinner=0x7f090023;
         public static final int roll=0x7f09000a;
-        public static final int saveConfigButton=0x7f09000f;
+        public static final int saveConfigButton=0x7f090010;
         public static final int seekbarVal=0x7f090008;
-        public static final int serverIPCode=0x7f090023;
-        public static final int tabHost=0x7f09000e;
-        public static final int tableDataRow=0x7f090020;
-        public static final int tableHeadingRow=0x7f090018;
-        public static final int textView2=0x7f09001c;
+        public static final int serverIPCode=0x7f090024;
+        public static final int tabHost=0x7f09000f;
+        public static final int tableDataRow=0x7f090021;
+        public static final int tableHeadingRow=0x7f090019;
+        public static final int textView2=0x7f09001d;
         public static final int top_gui_layout=0x7f090000;
     }
     public static final class layout {
@@ -85,6 +86,7 @@ public final class R {
         public static final int app_name=0x7f060000;
         public static final int begin_game=0x7f060005;
         public static final int bidText=0x7f060016;
+        public static final int current_player_text=0x7f060020;
         public static final int dialog_continue_label=0x7f06000f;
         public static final int dialog_quit_label=0x7f060010;
         public static final int dialog_quit_question=0x7f060011;

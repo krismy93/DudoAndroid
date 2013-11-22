@@ -5,6 +5,11 @@ import java.io.Serializable;
 import edu.up.cs301.game.GamePlayer;
 import edu.up.cs301.game.actionMsg.GameAction;
 
+/**
+ * RollAction that submits the rolla action to the game
+ * @author Krismy
+ *
+ */
 public class DudoRollAction extends GameAction implements Serializable {
 
 	/**

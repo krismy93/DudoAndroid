@@ -6,6 +6,7 @@ import edu.up.cs301.game.infoMsg.NotYourTurnInfo;
 
 public class NormalComputerPlayer extends DudoComputerPlayer {
 
+	DudoState state;
 	public NormalComputerPlayer(String name) {
 		super(name);
 		
@@ -13,10 +14,11 @@ public class NormalComputerPlayer extends DudoComputerPlayer {
 	}
 
 	protected void receiveInfo(GameInfo info) {
-		// TODO Auto-generated method stub
-		Bid bid = DudoState.currentBid;
-		if (info instanceof NotYourTurnInfo) return;
 		
+		if (info instanceof NotYourTurnInfo) return;
+		state = (DudoState)info;
+		
+		Bid bid = state.currentBid;
 		//get the dice of the normal player
 		//compare to most recent bid
 		int currentVal = bid.currentVal;
@@ -32,18 +34,16 @@ public class NormalComputerPlayer extends DudoComputerPlayer {
     		
     	}
     	// increases the frequency not the value
-    	bid.setLastBidVal(currentVal);
-    	bid.setLastFreq(currentFrequency);
+    	
     	int increase = (int)Math.random() *2;
     	currentFrequency = currentFrequency + increase;
     	currentVal = currentVal + 1;
-    	bid.setBidFreq(currentFrequency);
-    	bid.setBidVal(currentVal);
+
 		//if bid has values that are not probable call Dudo on recent player
 		
 		//game.sendAction(new DudoMoveAction(this, ,));
 		//if not then, make a guess within a range of two
-    	game.sendAction(new DudoMoveAction(this, currentVal,currentFrequency));
+    	game.sendAction(new DudoBidAction(this, currentVal,currentFrequency));
 	}
 
 }
